@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h3>Main page</h3>
+
+    <div sec:authorize="isAuthenticated()">
+        <h4>Authenticated</h4>
+    </div>
+
+    <div sec:authorize="isAnonymous()">
+        <h4>Anonymous</h4>
+    </div>
+
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        This content is only shown to ROLE_admin.
+    </div>
+    <div sec:authorize="hasRole('ADMIN')">
+        This content is only shown to ADMIN.
+    </div>
+
+
+
+
+    <a th:href="@{/closed}">Go to closed</a>
+
+    <br/><br/>
+
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Log out">
+    </form>
+
+    <br/>
+
+    <h2>Welcome</h2>
+    <p>Spring Security Thymeleaf tutorial</p>
+    <div sec:authorize="hasRole('USER')">Text visible to user.</div>
+    <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+    <div sec:authorize="isAuthenticated()">
+        Text visible only to authenticated users.
+    </div>
+    Authenticated username:
+    <div sec:authentication="name"></div>
+    Authenticated user roles:
+    <div sec:authentication="principal.authorities"></div>
+
+    <p>BREAK</p>
+
+    <div sec:authorize="hasRole('ADMIN')">
+        <div>
+            This content will only be visible to users who have
+            the "ADMIN" authority in their list of GrantedAuthority's.
+        </div>
+    </div>
+
+    <div sec:authorize="hasAuthority('ADMIN')"> IS ADMIN AUTHOR </div>
+    <div sec:authorize="hasAuthority('ROLE_ADMIN')"> IS ADMIN ROLE </div>
+
+    <p>Another...</p>
+
+    <!--Adding this throws an errror-->
+
+    <!--<div th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">ADMIN</div>-->
+    <!--<div th:if="${#authorization.expression('hasAuthority(''USER'')')}">USER</div>-->
+    <!--<div th:if="${#authorization.expression('isAuthenticated()')}">-->
+        <!--Text visible only to authenticated users.-->
+    <!--</div>-->
+
+</body>
+</html>
